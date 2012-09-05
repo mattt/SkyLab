@@ -44,7 +44,7 @@
         @"Blue" : @(0.50),
         @"Purple" : @(0.25)
      } block:^(id choice) {
-         self.subtitleLabel.text = NSLocalizedString(@"Please Enjoy This Colored Message", nil);
+         self.subtitleLabel.text = NSLocalizedString(@"Please Enjoy This Colorful Message", nil);
 
          if ([choice isEqualToString:@"Red"]) {
              self.subtitleLabel.textColor = [UIColor redColor];
