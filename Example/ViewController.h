@@ -31,6 +31,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *centerSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *rightSwitch;
 
-- (IBAction)resetChoices:(id)sender;
+- (IBAction)resetTests:(id)sender;
 
 @end

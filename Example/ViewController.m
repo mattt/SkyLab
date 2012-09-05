@@ -81,12 +81,12 @@
 
 #pragma mark - IBAction
 
-- (IBAction)resetChoices:(id)sender {
+- (IBAction)resetTests:(id)sender {
     [SkyLab resetTestNamed:@"Title"];
     [SkyLab resetTestNamed:@"Subtitle"];
     [SkyLab resetTestNamed:@"Switches"];
     
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Choices Reset", nil) message:NSLocalizedString(@"Multivariate & A/B tests will be re-run on next launch", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil] show];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Tests Reset", nil) message:NSLocalizedString(@"Segmentation will be re-run on next launch", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil] show];
 }
 
 @end
