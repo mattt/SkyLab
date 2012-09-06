@@ -1,7 +1,7 @@
 # SkyLab
 **Multivariate & A/B Testing for iOS and Mac**
 
-SkyLab is a backend-agnostic framework for [multivatiate](http://en.wikipedia.org/wiki/Multivariate_testing) and [A/B testing](http://en.wikipedia.org/wiki/A/B_testing).
+SkyLab is a backend-agnostic framework for [multivariate](http://en.wikipedia.org/wiki/Multivariate_testing) and [A/B testing](http://en.wikipedia.org/wiki/A/B_testing).
 
 Test conditions are persisted across sessions and launches using `NSUserDefaults`, ensuring that every user will have a consistent experience, no matter which testing bucket they end up in.
 
