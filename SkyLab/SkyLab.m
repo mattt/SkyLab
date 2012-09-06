@@ -94,7 +94,7 @@ static BOOL SLRandomBinaryChoice() {
                      A:(void (^)())A
                      B:(void (^)())B
 {
-    [self splitTestWithName:name choices:@[ @"A", @"B" ] block:^(NSString *choice) {
+    [self splitTestWithName:name choices:[NSArray arrayWithObjects:@"A", @"B", nil] block:^(NSString *choice) {
         if ([choice isEqualToString:@"A"] && A) {
             A();
         } else if ([choice isEqualToString:@"B"] && B) {
