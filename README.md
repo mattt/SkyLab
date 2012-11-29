@@ -9,6 +9,8 @@ SkyLab integrates easily into any existing statistics web service. Depending on 
 
 **Requests for integration with any particular backend are heartily encouraged.**
 
+> This project is part of a series of open source libraries covering the mission-critical aspects of an iOS app's infrastructure. Be sure to check out its sister projects: [GroundControl](https://github.com/mattt/GroundControl), [CargoBay](https://github.com/mattt/CargoBay), [houston](https://github.com/mattt/houston), and [Orbiter](https://github.com/mattt/Orbiter).
+
 ## Usage
 
 Check ouf the included example project to see everything in action.
