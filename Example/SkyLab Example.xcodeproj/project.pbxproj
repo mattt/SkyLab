@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F82DFAB916B835A20095ECA8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F82DFAB816B835A20095ECA8 /* Default-568h@2x.png */; };
 		F83687B515F7C0190018A10F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F78AAB15F55EAD00608A10 /* UIKit.framework */; };
 		F83687B615F7C0190018A10F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F78AAD15F55EAD00608A10 /* Foundation.framework */; };
 		F83687B715F7C0190018A10F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F78AAF15F55EAD00608A10 /* CoreGraphics.framework */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F82DFAB816B835A20095ECA8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F83687B315F7C0190018A10F /* SkyLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F83687CD15F7C04D0018A10F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		F83687CE15F7C04D0018A10F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = SOURCE_ROOT; };
@@ -85,6 +87,7 @@
 		F8F78A9C15F55EAD00608A10 = {
 			isa = PBXGroup;
 			children = (
+				F82DFAB816B835A20095ECA8 /* Default-568h@2x.png */,
 				F83687B815F7C0190018A10F /* SkyLab Example */,
 				F8F78AAA15F55EAD00608A10 /* Frameworks */,
 				F8F78AA815F55EAD00608A10 /* Products */,
@@ -153,7 +156,7 @@
 		F8F78A9E15F55EAD00608A10 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Mattt Thompson";
 			};
 			buildConfigurationList = F8F78AA115F55EAD00608A10 /* Build configuration list for PBXProject "SkyLab Example" */;
@@ -180,6 +183,7 @@
 			files = (
 				F83687D915F7C04D0018A10F /* InfoPlist.strings in Resources */,
 				F83687DA15F7C04D0018A10F /* ViewController.xib in Resources */,
+				F82DFAB916B835A20095ECA8 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +254,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -277,6 +284,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
