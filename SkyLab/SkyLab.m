@@ -164,7 +164,7 @@ static BOOL SLRandomBinaryChoice() {
             activeVariables = mutableActiveVariables;
         }
     } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:NSLocalizedString(@"Parameter `choices` must be either array or dictionary", nil) userInfo:nil];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:NSLocalizedString(@"Parameter `variables` must be either array or dictionary", nil) userInfo:nil];
     }
     
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
