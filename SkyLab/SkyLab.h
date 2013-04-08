@@ -43,3 +43,6 @@
 extern NSString * const SkyLabWillRunTestNotification;
 extern NSString * const SkyLabDidRunTestNotification;
 extern NSString * const SkyLabDidResetTestNotification;
+
+extern NSString * const SkyLabChoiceKey;
+extern NSString * const SkyLabActiveVariablesKey;

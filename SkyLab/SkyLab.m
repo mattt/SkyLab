@@ -27,6 +27,9 @@ NSString * const SkyLabWillRunTestNotification = @"SkyLabWillRunTestNotification
 NSString * const SkyLabDidRunTestNotification = @"SkyLabDidRunTestNotification";
 NSString * const SkyLabDidResetTestNotification = @"SkyLabDidResetTestNotification";
 
+NSString * const SkyLabChoiceKey = @"SkyLabChoice";
+NSString * const SkyLabActiveVariablesKey = @"SkyLabActiveVariables";
+
 static NSString * SLUserDefaultsKeyForTestName(NSString *name) {
     static NSString * const kSLUserDefaultsKeyFormat = @"SkyLab-%@";
 
@@ -128,9 +131,11 @@ static BOOL SLRandomBinaryChoice() {
     [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:choice forKey:SkyLabChoiceKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
     block(choice);
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
 }
 
 + (void)multivariateTestWithName:(NSString *)name
@@ -170,9 +175,11 @@ static BOOL SLRandomBinaryChoice() {
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:activeVariables forKey:SkyLabActiveVariablesKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
     block(activeVariables);
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
 }
 
 
