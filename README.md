@@ -13,7 +13,7 @@ SkyLab integrates easily into any existing statistics web service. Depending on 
 
 ## Usage
 
-Check ouf the included example project to see everything in action.
+Check out the included example project to see everything in action.
 
 ### Simple A/B Test
 
