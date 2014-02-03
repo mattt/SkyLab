@@ -41,7 +41,7 @@ static id SLRandomValueFromArray(NSArray *array) {
         return nil;
     }
     
-    int idx = arc4random() % [array count];
+    int idx = arc4random_uniform([array count]);
     return [array objectAtIndex:idx];
 }
 
