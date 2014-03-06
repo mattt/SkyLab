@@ -136,7 +136,11 @@ static BOOL SLRandomBinaryChoice() {
         }
     }
 
+    BOOL needsSynchronization = ![condition isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)]];
     [[NSUserDefaults standardUserDefaults] setObject:condition forKey:SLUserDefaultsKeyForTestName(name)];
+    if (needsSynchronization) {
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
     if (block) {
         NSDictionary *userInfo = @{SkyLabConditionKey: condition};
@@ -174,7 +178,11 @@ static BOOL SLRandomBinaryChoice() {
         activeVariables = mutableActiveVariables;
     }
 
+    BOOL needsSynchronization = ![activeVariables isEqualToSet:[NSSet setWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)]]];
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
+    if (needsSynchronization) {
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
     if (block) {
         NSDictionary *userInfo = @{SkyLabActiveVariablesKey: activeVariables};
@@ -187,6 +195,7 @@ static BOOL SLRandomBinaryChoice() {
 
 + (void)resetTestNamed:(NSString *)name {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:SLUserDefaultsKeyForTestName(name)];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidResetTestNotification object:name];
 }
