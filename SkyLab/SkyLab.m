@@ -58,15 +58,15 @@ static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) 
     
     double total = 0.0;
     for (id key in keys) {
-        NSNumber *weight = [dictionary valueForKey:key];
-        [mutableWeightedSums addObject:[NSNumber numberWithDouble:(total += [weight doubleValue])]];
+        total += [[dictionary valueForKey:key] doubleValue];
+        [mutableWeightedSums addObject:[NSNumber numberWithDouble:total]];
     }
     
     dispatch_once(&srand48OnceToken, ^{
         srand48(time(0));
     });
     
-    double r = drand48();
+    double r = drand48() * total;
     
     __block id randomObject = nil;
     [mutableWeightedSums enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
