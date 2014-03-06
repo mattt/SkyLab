@@ -111,6 +111,8 @@ static BOOL SLRandomBinaryChoice() {
                   choices:(id)choices
                     block:(void (^)(id choice))block
 {
+    NSParameterAssert([choices isKindOfClass:[NSArray class]] || [choices isKindOfClass:[NSDictionary class]]);
+
     if (!block) {
         return;
     }
@@ -125,8 +127,6 @@ static BOOL SLRandomBinaryChoice() {
         if (!choice || ![[choices allKeys] containsObject:choice]) {
             choice = SLRandomKeyFromDictionaryWithWeightedValues(choices);
         }
-    } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:NSLocalizedString(@"Parameter `choices` must be either array or dictionary", nil) userInfo:nil];
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
@@ -143,6 +143,8 @@ static BOOL SLRandomBinaryChoice() {
                        variables:(id)variables
                            block:(void (^)(NSSet *activeVariables))block
 {
+    NSParameterAssert([variables isKindOfClass:[NSArray class]] || [variables isKindOfClass:[NSDictionary class]]);
+
     if (!block) {
         return;
     }
@@ -169,8 +171,6 @@ static BOOL SLRandomBinaryChoice() {
             }];
             activeVariables = mutableActiveVariables;
         }
-    } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:NSLocalizedString(@"Parameter `variables` must be either array or dictionary", nil) userInfo:nil];
     }
     
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
