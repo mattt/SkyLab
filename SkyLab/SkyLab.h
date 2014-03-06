@@ -22,24 +22,45 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ 
+ */
 @interface SkyLab : NSObject
 
+/**
+ 
+ */
 + (void)abTestWithName:(NSString *)name
                      A:(void (^)())A
                      B:(void (^)())B;
 
+/**
+ 
+ */
 + (void)splitTestWithName:(NSString *)name
                   choices:(id)choices
                     block:(void (^)(id choice))block;
 
+/**
+ 
+ */
 + (void)multivariateTestWithName:(NSString *)name
                        variables:(id)variables
                            block:(void (^)(NSSet *activeVariables))block;
 
+/**
+ 
+ */
 + (void)resetTestNamed:(NSString *)name;
 
 @end
 
+///
+
+
+/**
+ 
+ */
 extern NSString * const SkyLabWillRunTestNotification;
 extern NSString * const SkyLabDidRunTestNotification;
 extern NSString * const SkyLabDidResetTestNotification;
