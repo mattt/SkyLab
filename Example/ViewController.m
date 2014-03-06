@@ -69,16 +69,6 @@
     }];
 }
 
-- (void)viewDidUnload {
-    _titleLabel = nil;
-    _subtitleLabel = nil;
-    
-    _leftSwitch = nil;
-    _centerSwitch = nil;
-    _rightSwitch = nil;
-    [super viewDidUnload];
-}
-
 #pragma mark - IBAction
 
 - (IBAction)resetTests:(id)sender {
