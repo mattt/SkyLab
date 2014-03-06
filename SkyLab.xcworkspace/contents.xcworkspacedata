@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:SkyLab"
+      name = "SkyLab">
+      <FileRef
+         location = "group:SkyLab.h">
+      </FileRef>
+      <FileRef
+         location = "group:SkyLab.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:Example/SkyLab Example.xcodeproj">
+   </FileRef>
+</Workspace>
