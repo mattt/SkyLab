@@ -38,7 +38,7 @@
     }];
     
     // Split Test with Weighted Probabilities
-    [SkyLab splitTestWithName:@"Subtitle" choices:@{
+    [SkyLab splitTestWithName:@"Subtitle" conditions:@{
         @"Red" : @(0.15),
         @"Green" : @(0.10),
         @"Blue" : @(0.50),
