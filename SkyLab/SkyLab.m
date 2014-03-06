@@ -42,8 +42,7 @@ static id SLRandomValueFromArray(NSArray *array) {
         return nil;
     }
     
-    int idx = arc4random_uniform([array count]);
-    return [array objectAtIndex:idx];
+    return [array objectAtIndex:(NSUInteger)arc4random_uniform([array count])];
 }
 
 static dispatch_once_t srand48OnceToken;
@@ -58,8 +57,8 @@ static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) 
     
     double total = 0.0;
     for (id key in keys) {
-        total += [[dictionary valueForKey:key] doubleValue];
-        [mutableWeightedSums addObject:[NSNumber numberWithDouble:total]];
+        total += [dictionary[key] doubleValue];
+        [mutableWeightedSums addObject:@(total)];
     }
     
     dispatch_once(&srand48OnceToken, ^{
@@ -69,10 +68,9 @@ static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) 
     double r = drand48() * total;
     
     __block id randomObject = nil;
-    [mutableWeightedSums enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        double max = [obj doubleValue];
-        if (r <= max) {
-            randomObject = [keys objectAtIndex:idx];
+    [mutableWeightedSums enumerateObjectsUsingBlock:^(NSNumber *cumulativeWeightedSum, NSUInteger idx, BOOL *stop) {
+        if (r <= [cumulativeWeightedSum doubleValue]) {
+            randomObject = keys[idx];
             *stop = YES;
         }
     }];
@@ -128,7 +126,8 @@ static BOOL SLRandomBinaryChoice() {
     [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
 
     if (block) {
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:choice forKey:SkyLabChoiceKey];
+        NSDictionary *userInfo = @{SkyLabChoiceKey: choice};
+
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
         block(choice);
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
@@ -168,7 +167,8 @@ static BOOL SLRandomBinaryChoice() {
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
 
     if (block) {
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:activeVariables forKey:SkyLabActiveVariablesKey];
+        NSDictionary *userInfo = @{SkyLabActiveVariablesKey: activeVariables};
+
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
         block(activeVariables);
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
