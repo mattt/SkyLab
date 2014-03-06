@@ -130,8 +130,7 @@ static BOOL SLRandomBinaryChoice() {
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:choice forKey:SkyLabChoiceKey];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
@@ -174,8 +173,7 @@ static BOOL SLRandomBinaryChoice() {
     }
     
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:activeVariables forKey:SkyLabActiveVariablesKey];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
@@ -185,7 +183,6 @@ static BOOL SLRandomBinaryChoice() {
 
 + (void)resetTestNamed:(NSString *)name {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:SLUserDefaultsKeyForTestName(name)];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidResetTestNotification object:name];
 }
