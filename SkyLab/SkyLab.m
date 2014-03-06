@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <stdlib.h>
 #import "SkyLab.h"
+
+#include <stdlib.h>
 
 NSString * const SkyLabWillRunTestNotification = @"SkyLabWillRunTestNotification";
 NSString * const SkyLabDidRunTestNotification = @"SkyLabDidRunTestNotification";
@@ -45,6 +46,8 @@ static id SLRandomValueFromArray(NSArray *array) {
     return [array objectAtIndex:idx];
 }
 
+static dispatch_once_t srand48OnceToken;
+
 static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) {
     if ([dictionary count] == 0) {
         return nil;
@@ -59,12 +62,11 @@ static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) 
         [mutableWeightedSums addObject:[NSNumber numberWithDouble:(total += [weight doubleValue])]];
     }
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        srandomdev();
+    dispatch_once(&srand48OnceToken, ^{
+        srand48(time(0));
     });
     
-    double r = (random() % (INT_MAX + 1)) * (total / INT_MAX);
+    double r = drand48();
     
     __block id randomObject = nil;
     [mutableWeightedSums enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -79,12 +81,11 @@ static id SLRandomKeyFromDictionaryWithWeightedValues(NSDictionary *dictionary) 
 }
 
 static BOOL SLRandomBinaryChoiceWithProbability(double p) {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        srandomdev();
+    dispatch_once(&srand48OnceToken, ^{
+        srand48(time(0));
     });
     
-    return (random() % (INT_MAX + 1)) * (1.0 / INT_MAX) <= p;
+    return drand48() <= p;
 }
 
 static BOOL SLRandomBinaryChoice() {
@@ -182,13 +183,11 @@ static BOOL SLRandomBinaryChoice() {
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
 }
 
-
 + (void)resetTestNamed:(NSString *)name {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:SLUserDefaultsKeyForTestName(name)];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidResetTestNotification object:name];
 }
-
 
 @end
