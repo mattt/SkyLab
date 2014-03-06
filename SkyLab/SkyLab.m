@@ -28,8 +28,9 @@ NSString * const SkyLabWillRunTestNotification = @"SkyLabWillRunTestNotification
 NSString * const SkyLabDidRunTestNotification = @"SkyLabDidRunTestNotification";
 NSString * const SkyLabDidResetTestNotification = @"SkyLabDidResetTestNotification";
 
-NSString * const SkyLabChoiceKey = @"SkyLabChoice";
-NSString * const SkyLabActiveVariablesKey = @"SkyLabActiveVariables";
+NSString * const SkyLabConditionKey = @"com.skylab.condition";
+NSString * const SkyLabActiveVariablesKey = @"com.skylab.active-variables";
+#define SkyLabChoiceKey SkyLabConditionKey
 
 static NSString * SLUserDefaultsKeyForTestName(NSString *name) {
     static NSString * const kSLUserDefaultsKeyFormat = @"SkyLab-%@";
@@ -96,7 +97,7 @@ static BOOL SLRandomBinaryChoice() {
                      A:(void (^)())A
                      B:(void (^)())B
 {
-    [self splitTestWithName:name choices:[NSArray arrayWithObjects:@"A", @"B", nil] block:^(NSString *choice) {
+    [self splitTestWithName:name conditions:[NSArray arrayWithObjects:@"A", @"B", nil] block:^(NSString *choice) {
         if ([choice isEqualToString:@"A"] && A) {
             A();
         } else if ([choice isEqualToString:@"B"] && B) {
@@ -109,61 +110,70 @@ static BOOL SLRandomBinaryChoice() {
                   choices:(id)choices
                     block:(void (^)(id choice))block
 {
-    NSParameterAssert([choices isKindOfClass:[NSArray class]] || [choices isKindOfClass:[NSDictionary class]]);
+    [self splitTestWithName:name conditions:(id <NSFastEnumeration>)choices block:block];
+}
 
-    id choice = [[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)];
-    
-    if ([choices isKindOfClass:[NSArray class]]) {
-        if (!choice || ![choices containsObject:choice]) {
-            choice = SLRandomValueFromArray(choices);
++ (void)splitTestWithName:(NSString *)name
+               conditions:(id <NSFastEnumeration>)conditions
+                    block:(void (^)(id))block;
+{
+    id condition = [[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)];
+
+    if ([(id <NSObject>)conditions isKindOfClass:[NSDictionary class]]) {
+        if (!condition || ![[(NSDictionary *)conditions allKeys] containsObject:condition]) {
+            condition = SLRandomKeyFromDictionaryWithWeightedValues((NSDictionary *)conditions);
         }
-    } else if ([choices isKindOfClass:[NSDictionary class]]) {
-        if (!choice || ![[choices allKeys] containsObject:choice]) {
-            choice = SLRandomKeyFromDictionaryWithWeightedValues(choices);
+    } else {
+        BOOL containsCondition = NO;
+        NSMutableArray *mutableCandidates = [NSMutableArray array];
+        for (id candidate in conditions) {
+            [mutableCandidates addObject:candidate];
+            containsCondition = containsCondition || [condition isEqual:candidate];
+        }
+
+        if (!condition || !containsCondition) {
+            condition = SLRandomValueFromArray(mutableCandidates);
         }
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
+    [[NSUserDefaults standardUserDefaults] setObject:condition forKey:SLUserDefaultsKeyForTestName(name)];
 
     if (block) {
-        NSDictionary *userInfo = @{SkyLabChoiceKey: choice};
+        NSDictionary *userInfo = @{SkyLabConditionKey: condition};
 
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
-        block(choice);
+        block(condition);
         [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
     }
 }
 
 + (void)multivariateTestWithName:(NSString *)name
-                       variables:(id)variables
-                           block:(void (^)(NSSet *activeVariables))block
+                       variables:(id <NSFastEnumeration>)variables
+                           block:(void (^)(NSSet *assignedVariables))block
 {
-    NSParameterAssert([variables isKindOfClass:[NSArray class]] || [variables isKindOfClass:[NSDictionary class]]);
-    
     NSSet *activeVariables = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)]];
-    
-    if ([variables isKindOfClass:[NSArray class]]) {
-        if (!activeVariables || ![activeVariables isKindOfClass:[NSSet class]] || ![activeVariables intersectsSet:[NSSet setWithArray:variables]]) {
-            NSMutableSet *mutableActiveVariables = [NSMutableSet setWithCapacity:[variables count]];
-            [variables enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if (SLRandomBinaryChoice()) {
-                    [mutableActiveVariables addObject:obj];
-                }
-            }];
-            activeVariables = mutableActiveVariables;
-        }
-    } else if ([variables isKindOfClass:[NSDictionary class]]) {
-        if (!activeVariables || ![activeVariables isKindOfClass:[NSSet class]] || ![activeVariables intersectsSet:[NSSet setWithArray:[variables allKeys]]]) {
-            NSMutableSet *mutableActiveVariables = [NSMutableSet setWithCapacity:[variables count]];
-            [variables enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+
+    if ([(id <NSObject>)variables isKindOfClass:[NSDictionary class]]) {
+        if (!activeVariables || ![activeVariables isKindOfClass:[NSSet class]] || ![activeVariables intersectsSet:[NSSet setWithArray:[(NSDictionary *)variables allKeys]]]) {
+            NSMutableSet *mutableActiveVariables = [NSMutableSet setWithCapacity:[(NSDictionary *)variables count]];
+            [(NSDictionary *)variables enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if (SLRandomBinaryChoiceWithProbability([obj doubleValue])) {
                     [mutableActiveVariables addObject:key];
                 }
             }];
             activeVariables = mutableActiveVariables;
         }
+    } else {
+        NSMutableSet *mutableActiveVariables = [NSMutableSet set];
+        for (id variable in variables) {
+            if ([activeVariables containsObject:variable] || SLRandomBinaryChoice()) {
+                [mutableActiveVariables addObject:variable];
+            }
+        }
+
+        activeVariables = mutableActiveVariables;
     }
-    
+
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
 
     if (block) {
