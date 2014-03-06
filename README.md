@@ -5,7 +5,7 @@ SkyLab is a backend-agnostic framework for [multivariate](http://en.wikipedia.or
 
 Test conditions are persisted across sessions and launches using `NSUserDefaults`, ensuring that every user will have a consistent experience, no matter which testing bucket they end up in.
 
-SkyLab integrates easily into any existing statistics web service. Depending on your particular needs, this may include posting to an endpoint in test blocks, or perhaps setting an HTTP header for a shared API client. 
+SkyLab integrates easily into any existing statistics web service. Depending on your particular needs, this may include posting to an endpoint in test blocks, or perhaps setting an HTTP header for a shared API client.
 
 **Requests for integration with any particular backend are heartily encouraged.**
 
@@ -30,23 +30,23 @@ Check out the included example project to see everything in action.
 You can pass either an `NSDictionary` (with values representing the weighted probability of their corresponding key) or an `NSArray` (with each value having an equal chance of being chosen) into the `choices` parameter.
 
 ```objective-c
-[SkyLab splitTestWithName:@"Subtitle" choices:@{
+[SkyLab splitTestWithName:@"Subtitle" conditions:@{
     @"Red" : @(0.15),
     @"Green" : @(0.10),
     @"Blue" : @(0.50),
     @"Purple" : @(0.25)
- } block:^(id choice) {
-     self.subtitleLabel.text = NSLocalizedString(@"Please Enjoy This Colorful Message", nil);
+} block:^(id choice) {
+    self.subtitleLabel.text = NSLocalizedString(@"Please Enjoy This Colorful Message", nil);
 
-     if ([choice isEqualToString:@"Red"]) {
-         self.subtitleLabel.textColor = [UIColor redColor];
-     } else if ([choice isEqualToString:@"Green"]) {
-         self.subtitleLabel.textColor = [UIColor greenColor];
-     } else if ([choice isEqualToString:@"Blue"]) {
-         self.subtitleLabel.textColor = [UIColor blueColor];
-     } else if ([choice isEqualToString:@"Purple"]) {
-         self.subtitleLabel.textColor = [UIColor purpleColor];
-     }
+    if ([choice isEqualToString:@"Red"]) {
+        self.subtitleLabel.textColor = [UIColor redColor];
+    } else if ([choice isEqualToString:@"Green"]) {
+        self.subtitleLabel.textColor = [UIColor greenColor];
+    } else if ([choice isEqualToString:@"Blue"]) {
+        self.subtitleLabel.textColor = [UIColor blueColor];
+    } else if ([choice isEqualToString:@"Purple"]) {
+        self.subtitleLabel.textColor = [UIColor purpleColor];
+    }
 }];
 ```
 
@@ -64,9 +64,9 @@ You can pass either an `NSDictionary` (with values representing the weighted pro
 }];
 ```
 
-## Creators
+## Contact
 
-[Mattt Thompson](http://github.com/mattt)  
+[Mattt Thompson](http://github.com/mattt)
 [@mattt](https://twitter.com/mattt)
 
 ## License
