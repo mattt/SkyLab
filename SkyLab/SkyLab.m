@@ -113,10 +113,6 @@ static BOOL SLRandomBinaryChoice() {
 {
     NSParameterAssert([choices isKindOfClass:[NSArray class]] || [choices isKindOfClass:[NSDictionary class]]);
 
-    if (!block) {
-        return;
-    }
-    
     id choice = [[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)];
     
     if ([choices isKindOfClass:[NSArray class]]) {
@@ -131,11 +127,12 @@ static BOOL SLRandomBinaryChoice() {
 
     [[NSUserDefaults standardUserDefaults] setObject:choice forKey:SLUserDefaultsKeyForTestName(name)];
 
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:choice forKey:SkyLabChoiceKey];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
-    block(choice);
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
+    if (block) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:choice forKey:SkyLabChoiceKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
+        block(choice);
+        [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
+    }
 }
 
 + (void)multivariateTestWithName:(NSString *)name
@@ -143,10 +140,6 @@ static BOOL SLRandomBinaryChoice() {
                            block:(void (^)(NSSet *activeVariables))block
 {
     NSParameterAssert([variables isKindOfClass:[NSArray class]] || [variables isKindOfClass:[NSDictionary class]]);
-
-    if (!block) {
-        return;
-    }
     
     NSSet *activeVariables = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:SLUserDefaultsKeyForTestName(name)]];
     
@@ -174,16 +167,17 @@ static BOOL SLRandomBinaryChoice() {
     
     [[NSUserDefaults standardUserDefaults] setObject:[activeVariables allObjects] forKey:SLUserDefaultsKeyForTestName(name)];
 
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:activeVariables forKey:SkyLabActiveVariablesKey];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
-    block(activeVariables);
-    [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
+    if (block) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:activeVariables forKey:SkyLabActiveVariablesKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabWillRunTestNotification object:name userInfo:userInfo];
+        block(activeVariables);
+        [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidRunTestNotification object:name userInfo:userInfo];
+    }
 }
 
 + (void)resetTestNamed:(NSString *)name {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:SLUserDefaultsKeyForTestName(name)];
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:SkyLabDidResetTestNotification object:name];
 }
 
