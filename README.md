@@ -66,10 +66,11 @@ You can pass either an `NSDictionary` (with values representing the weighted pro
 
 ## Contact
 
-[Mattt Thompson](http://github.com/mattt)
-[@mattt](https://twitter.com/mattt)
+Mattt Thompson
+
+- http://github.com/mattt
+- http://twitter.com/mattt
 
 ## License
 
 SkyLab is available under the MIT license. See the LICENSE file for more info.
-
