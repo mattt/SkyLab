@@ -1,3 +1,7 @@
+> This library is no longer being maintained.
+> You can continue to use SkyLab in your projects,
+> but we recommend switching another solution whenever you have the opportunity.
+
 # SkyLab
 **Multivariate & A/B Testing for iOS and Mac**
 
